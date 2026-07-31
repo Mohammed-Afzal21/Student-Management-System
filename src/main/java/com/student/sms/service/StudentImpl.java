@@ -4,9 +4,7 @@ import com.student.sms.dto.StudentDto;
 import com.student.sms.entity.Student;
 import com.student.sms.mapper.StudentMapper;
 import com.student.sms.repository.StudentRepository;
-
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,5 +31,29 @@ public class StudentImpl implements StudentService {
     public void createStudent(StudentDto studentDto) {
         Student student = StudentMapper.mapToStudent(studentDto);
         studentRepository.save(student);
+    }
+
+    @Override
+    public StudentDto getStudentById(Long id) {
+
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Student not found with id: " + id));
+
+        return StudentMapper.mapToStudentDto(student);
+    }
+
+    @Override
+    public void updateStudent(StudentDto studentDto) {
+
+        Student student = StudentMapper.mapToStudent(studentDto);
+
+        studentRepository.save(student);
+    }
+
+    @Override
+    public void deleteStudent(Long id) {
+
+        studentRepository.deleteById(id);
     }
 }
